@@ -1,0 +1,47 @@
+{
+  "name": "manaphp/app-api",
+  "description": "ManaPHP Api Application",
+  "type": "project",
+  "require": {
+    "manaphp/framework": "dev-master",
+    "johnlui/aliyun-oss": "^2.2"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "livissnack",
+      "email": "brucesnack@outlook.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "php -n -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "php -n -r \"chmod('manacli', 0755);\"",
+      "php -n -r \"is_dir('data')||mkdir('data');chmod('data', 0777);\"",
+      "php -n -r \"is_dir('tmp')||mkdir('tmp');chmod('tmp', 0777);\""
+    ]
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "archive": {
+    "exclude": [
+      "!.gitkeep",
+      "!.env",
+      "!vendor",
+      ".travis.yml"
+    ]
+  },
+  "keywords": [
+    "manaphp",
+    "phalcon",
+    "laravel",
+    "yii2",
+    "api"
+  ]
+}

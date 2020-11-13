@@ -1,0 +1,110 @@
+{
+    "packages": [
+        {
+            "name": "johnlui/aliyun-oss",
+            "version": "v2.2.1",
+            "version_normalized": "2.2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnlui/AliyunOSS.git",
+                "reference": "f10fdec4775e22a8295366981e1daf48c62ce5d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnlui/AliyunOSS/zipball/f10fdec4775e22a8295366981e1daf48c62ce5d3",
+                "reference": "f10fdec4775e22a8295366981e1daf48c62ce5d3",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "time": "2017-04-06T06:48:21+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "src/AliyunOSS.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Lui",
+                    "email": "wenhanlv@gmail.com"
+                }
+            ],
+            "description": "阿里云 OSS 官方 SDK 的 Composer 封装，支持任何 PHP 项目，包括 Laravel、Symfony、TinyLara 等等。",
+            "homepage": "https://github.com/johnlui/AliyunOSS",
+            "keywords": [
+                "AliyunOSS",
+                "aliyun",
+                "oss"
+            ],
+            "support": {
+                "issues": "https://github.com/johnlui/AliyunOSS/issues",
+                "source": "https://github.com/johnlui/AliyunOSS/tree/master"
+            },
+            "install-path": "../johnlui/aliyun-oss"
+        },
+        {
+            "name": "manaphp/framework",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/manaphp/framework.git",
+                "reference": "59dae292edb76c29e0bc6ef319b1feba5573ba82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/manaphp/framework/zipball/59dae292edb76c29e0bc6ef319b1feba5573ba82",
+                "reference": "59dae292edb76c29e0bc6ef319b1feba5573ba82",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "time": "2020-06-24T04:02:50+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "ManaPHP\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ManaPHP Mark",
+                    "email": "manaphp@qq.com"
+                }
+            ],
+            "description": "The ManaPHP Framework",
+            "homepage": "https://github.com/manaphp/framework",
+            "keywords": [
+                "di",
+                "framework",
+                "laravel",
+                "manaphp",
+                "yii2"
+            ],
+            "install-path": "../manaphp/framework"
+        }
+    ],
+    "dev": true
+}
