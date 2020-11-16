@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $token = jwt_encode($info, $ttl, 'user');
 
-        return ['user_name' => $user->nickName, 'token' => $token, 'ttl' => $ttl - seconds('1d')];
+        return ['openid' => $user->openid, 'token' => $token, 'ttl' => $ttl - seconds('1d')];
     }
 
     public function authAction()
