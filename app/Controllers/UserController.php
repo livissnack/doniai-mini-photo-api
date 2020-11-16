@@ -18,6 +18,7 @@ class UserController extends Controller
     {
         $code = input('code', ['string']);
         $wechat = $this->wechatService->login($code);
+        $wechat = json_parse($wechat);
         $this->logger->info($wechat, gettype($wechat));
         if (!is_array($wechat) || !isset($wechat['openid'])) {
             return 'openid获取失败';
