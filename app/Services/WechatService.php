@@ -22,11 +22,7 @@ class WechatService extends Service
             $request_url = param_get('wechat_base_url') . '/sns/jscode2session?' . http_build_query($params);
             $response = rest_get($request_url, [], 1.0)->body;
             $this->logger->info($response);
-            if ($response['errcode'] === 0) {
-                return $response;
-            } else {
-                throw new \Exception('小程序授权登录失败');
-            }
+            return $response;
         } catch (\Throwable $throwable) {
             return $throwable->getMessage();
         }

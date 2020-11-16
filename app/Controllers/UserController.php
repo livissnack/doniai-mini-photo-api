@@ -18,17 +18,19 @@ class UserController extends Controller
     {
         $code = input('code', ['string']);
         $wechat = $this->wechatService->login($code);
-        $wechat = json_parse($wechat);
-        $this->logger->info($wechat, gettype($wechat));
-        if (!is_array($wechat) || !isset($wechat['openid'])) {
+        if ($wechat['errcode'] !==0) {
+            return $wechat['errmsg'];
+        }
+        $this->logger->info($wechat);
+        if (!is_array($wechat) || !isset($wechat['data']['openid'])) {
             return 'openid获取失败';
         }
-        $user = User::first(['openId' => $wechat['openid']]);
+        $user = User::first(['openId' => $wechat['data']['openid']]);
         if (is_null($user)) {
-            User::rCreate(['openid' => $wechat['openid']]);
+            User::rCreate(['openid' => $wechat['data']['openid']]);
             return ['code' => 1, 'message' => '用户未授权信息同步'];
         }
-        $user->session_key = $wechat['session_key'];
+        $user->session_key = $wechat['data']['session_key'];
         $user->save();
         $ttl = seconds('7d');
         $info = [
