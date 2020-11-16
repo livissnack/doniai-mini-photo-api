@@ -18,6 +18,10 @@ class UserController extends Controller
     {
         $code = input('code', ['string']);
         $wechat = $this->wechatService->login($code);
+        $this->logger->info($wechat, gettype($wechat));
+        if (!is_array($wechat) || !isset($wechat['openid'])) {
+            return 'openid获取失败';
+        }
         $user = User::first(['openId' => $wechat['openid']]);
         if (is_null($user)) {
             User::rCreate(['openid' => $wechat['openid']]);
