@@ -25,7 +25,13 @@ return [
         'logger' => ['level' => env('LOGGER_LEVEL', 'info')],
         'restClient' => ['proxy' => env('REST_CLIENT_PROXY', '')],
     ],
-    'services' => [],
+    'services' => [
+        'baiduService' => [
+            'base_url' => env('BAIDU_AI_URL'),
+            'access_key' => env('BAIDU_ACCESS_KEY'),
+            'secret_key' => env('BAIDU_SECRET_KEY'),
+        ]
+    ],
     'listeners' => [],
     'plugins' => [
         'cors',
