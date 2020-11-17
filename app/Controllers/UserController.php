@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\User;
 use ManaPHP\Rest\Controller;
-use App\Models\PhotoHistory;
 use App\Services\WechatService;
 
 /**
@@ -73,14 +72,5 @@ class UserController extends Controller
         $user->login_time = time();
         $user->login_ip = $this->request->getClientIp();
         return $user->save();
-    }
-
-    public function photoHistoryAction()
-    {
-        $user_id = $this->identity->getId();
-        if ($user_id < 0) {
-            return '用户未授权登录';
-        }
-        return PhotoHistory::where(['user_id' => $user_id])->paginate();
     }
 }
