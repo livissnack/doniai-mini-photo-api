@@ -70,4 +70,28 @@ class AliMarketService extends Service
             return $throwable->getMessage();
         }
     }
+
+    public function idphoto($photo_key)
+    {
+        try {
+            if (is_null($photo_key)) {
+                throw new MissingFieldException('图片photo_key为空');
+            }
+
+            $body = [
+                'paper' => 'inch5',
+                'photo_key' => $photo_key,
+
+            ];
+            $request_url = 'https://idphotox.market.alicloudapi.com/idphoto/arrange';
+            $response = rest_post($request_url, $body, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')], 1.0)->body;
+            if ($response['status'] == 0 && isset($response['data']['result'])) {
+                return $response['data'];
+            } else {
+                throw new \Exception('证件照制作失败');
+            }
+        } catch (Throwable $throwable) {
+            return $throwable->getMessage();
+        }
+    }
 }
