@@ -4,18 +4,14 @@ namespace App\Models;
 use ManaPHP\Db\Model;
 
 /**
- * Class App\Models\PhotoHistory
+ * Class App\Models\PhotoBg
  */
-class PhotoHistory extends Model
+class PhotoBg extends Model
 {
-    public $ph_id;
-    public $image_url;
-    public $size;
-    public $user_id;
-    public $print_image_url;
-    public $photo_key;
-    public $photo_spec_id;
-    public $remark;
+    public $bg_id;
+    public $name;
+    public $value;
+    public $enabled;
     public $updator_name;
     public $updated_time;
     public $creator_name;
@@ -26,7 +22,7 @@ class PhotoHistory extends Model
      */
     public function getTable()
     {
-        return 'photo_history';
+        return 'photo_bg';
     }
 
     /**
@@ -34,6 +30,6 @@ class PhotoHistory extends Model
      */
     public function getPrimaryKey()
     {
-        return 'ph_id';
+        return 'bg_id';
     }
 }

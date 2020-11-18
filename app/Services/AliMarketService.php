@@ -36,7 +36,7 @@ class AliMarketService extends Service
         }
     }
 
-    public function photo($image_url, $spec = 2, $bk = 'blue', $ext_name = 'png')
+    public function photo($image_url, $spec = 2, $bk = 'blue', $ext_name = 'png', $with_photo_key = 1)
     {
         try {
             if (is_null($image_url)) {
@@ -56,6 +56,7 @@ class AliMarketService extends Service
                 'photo' => $image_url,
                 'spec' => $spec,
                 'bk' => $bk,
+                'with_photo_key' => $with_photo_key,
                 'beauty_degree' => 1.5
             ];
             $request_url = 'https://alidphoto.aisegment.com/idphoto/make';

@@ -41,9 +41,11 @@ class AiController extends Controller
         $photo_history->image_url = $photo_url;
         $photo_history->size = $make_data['size'] ?? '';
         $photo_history->user_id = $this->identity->getId();
-        $photo_history->image_url = $photo_url;
+        $photo_history->photo_spec_id = $spec;
+        $photo_history->image_url = str_replace('http://', 'https://', $photo_url);
+        $photo_history->photo_key = $make_data['photo_key'];
         $photo_history->save();
-        return ['code' => 0, 'msg' => '制作成功', 'data' => $photo_history->image_url];
+        return ['code' => 0, 'message' => '制作成功', 'data' => $photo_history->image_url];
     }
 
     public function ocrPrintedTextAction()
