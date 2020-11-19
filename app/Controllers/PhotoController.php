@@ -29,7 +29,7 @@ class PhotoController extends Controller
             $make_res = $this->photoService->make($base_img, $spec_id);
 
             if ($make_res['code'] !== 200) {
-                return '制作失败';
+                return $make_res['result'];
             }
 
             $filename = $make_res['result']['file_name'][0];
