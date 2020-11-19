@@ -19,7 +19,8 @@ class PayController extends Controller
         }
 
         try {
-            $throwable = null;
+            $success = false;
+            $data = false;
             $this->db->begin();
 
             $log_type = PayLogType::first(['code' => 'photo.take.pay']);
@@ -36,17 +37,21 @@ class PayController extends Controller
 
             $user->balance = $user->balance - $amount;
             $user->update();
-            return ['code' => 0, 'message' => '支付成功', 'balance' => $user->balance];
+
+            $success = true;
+            $data = ['code' => 0, 'message' => '支付成功', 'balance' => $user->balance];
 
         } catch (\Throwable $throwable) {
             $this->logger->error($throwable);
             return $throwable;
         } finally {
-            if ($throwable) {
-                $this->db->rollback();
-            } else {
+            if ($success) {
                 $this->db->commit();
+                return $data === false ? '支付失败' : $data;
+            } else {
+                $this->db->rollback();
             }
+
         }
     }
 }
