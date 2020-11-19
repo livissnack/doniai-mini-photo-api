@@ -11,7 +11,7 @@ class PayController extends Controller
 {
     public function photoAction()
     {
-        $amount = input('amount', ['int', 'min' => 0.01]);
+        $amount = input('amount', ['float', 'min' => 0.01]);
         $pay_json = input('pay_json', ['string', 'default' => '']);
         $user_id = $this->identity->getId();
         if ($user_id < 0) {
