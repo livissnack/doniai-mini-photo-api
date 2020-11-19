@@ -32,11 +32,17 @@ class PhotoController extends Controller
                 return '制作失败';
             }
 
+            $filename = $make_res['result']['file_name'][0];
+
+            if (PhotoHistory::exists(['photo_key' => $filename])) {
+                return PhotoHistory::first(['photo_key' => $filename]);
+            }
+
             $photo_history = new PhotoHistory();
             $photo_history->image_url = $make_res['result']['img_wm_url_list'][0];
             $photo_history->size = json_stringify($make_res['result']['size']);
             $photo_history->print_image_url = $make_res['result']['print_wm_url_list'][0];
-            $photo_history->photo_key = $make_res['result']['file_name'];
+            $photo_history->photo_key = $make_res['result']['file_name'][0];
             $photo_history->user_id = $this->identity->getId();
             $photo_history->photo_spec_id = $spec_id;
 

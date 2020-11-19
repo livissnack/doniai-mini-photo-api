@@ -73,4 +73,13 @@ class UserController extends Controller
         $user->login_ip = $this->request->getClientIp();
         return $user->save();
     }
+
+    public function balanceAction()
+    {
+        $user_id = $this->identity->getId();
+        if ($user_id < 0) {
+            return '未登录';
+        }
+        return User::value(['user_id' => $user_id], 'balance');
+    }
 }
