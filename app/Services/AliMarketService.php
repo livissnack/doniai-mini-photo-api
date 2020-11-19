@@ -67,6 +67,7 @@ class AliMarketService extends Service
                 throw new \Exception('证件照制作失败');
             }
         } catch (Throwable $throwable) {
+            $this->logger->error($throwable);
             return $throwable->getMessage();
         }
     }
