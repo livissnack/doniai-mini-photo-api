@@ -80,6 +80,7 @@ class UserController extends Controller
         if ($user_id < 0) {
             return '未登录';
         }
-        return User::value(['user_id' => $user_id], 'balance');
+        $balance = User::value(['user_id' => $user_id], 'balance');
+        return ['code' => 0, 'message' => '请求成功', 'balance' => $balance];
     }
 }
