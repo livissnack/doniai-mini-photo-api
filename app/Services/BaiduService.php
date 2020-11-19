@@ -27,7 +27,7 @@ class BaiduService extends Service
             ];
             $request_data = ['image' => base64_encode($img)];
             $request_url = $this->_base_url . '/image-classify/v1/plant?' . http_build_query($params);
-            $response = rest_post($request_url, $request_data, ['Content-Type' => 'application/x-www-form-urlencoded'], 1.0)->body;
+            $response = rest_post($request_url, $request_data, ['Content-Type' => 'application/x-www-form-urlencoded'])->body;
             if (!isset($response['error'])) {
                 return $response;
             } else {
@@ -54,7 +54,7 @@ class BaiduService extends Service
                 'client_secret' => $this->_secret_key,
             ];
             $request_url = 'https://aip.baidubce.com/oauth/2.0/token?'.http_build_query($params);
-            $response = rest_get($request_url, [], 1.0)->body;
+            $response = rest_get($request_url, [])->body;
             if (!isset($response['error'])) {
                 $this->redisDb->set($redis_key, $response['access_token'], seconds('30d'));
                 return $response;

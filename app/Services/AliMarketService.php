@@ -24,7 +24,7 @@ class AliMarketService extends Service
                 'type' => $type
             ];
             $request_url = param_get('ali_wuliu_base_url') . '/kdi?' . http_build_query($params);
-            $response = rest_get($request_url, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')], 1.0)->body;
+            $response = rest_get($request_url, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')])->body;
             $this->logger->info($response);
             if ($response['status'] == 0) {
                 return $response['result'];
@@ -60,11 +60,41 @@ class AliMarketService extends Service
                 'beauty_degree' => 1.5
             ];
             $request_url = 'https://alidphoto.aisegment.com/idphoto/make';
-            $response = rest_post($request_url, $body, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')], 1.0)->body;
+            $response = rest_post($request_url, $body, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')])->body;
+
             if ($response['status'] == 0 && isset($response['data']['result'])) {
                 return $response['data'];
             } else {
                 throw new \Exception('证件照制作失败');
+            }
+
+        } catch (Throwable $throwable) {
+            $this->logger->error($throwable);
+            return $throwable->getMessage();
+        }
+    }
+
+    private function _make_photo_check($image_url, $spec, $with_photo_key)
+    {
+        try {
+            if (is_null($image_url)) {
+                throw new MissingFieldException('图片base64内容为空');
+            }
+
+            $body = [
+                'photo' => $image_url,
+                'spec' => $spec,
+                'with_photo_key' => $with_photo_key,
+            ];
+            $request_url = 'https://idphotov.market.alicloudapi.com/idphoto/env_detect';
+            $response = rest_post($request_url, $body, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')])->body;
+            $this->logger->error($response);
+            if ($response['status'] == 0 && isset($response['data'])) {
+                return $response['data'];
+            } elseif ($response['status'] !== 0) {
+                return $response['errmsg'];
+            } else {
+                throw new \Exception('证件照环境检测失败');
             }
         } catch (Throwable $throwable) {
             $this->logger->error($throwable);
@@ -85,7 +115,7 @@ class AliMarketService extends Service
 
             ];
             $request_url = 'https://idphotox.market.alicloudapi.com/idphoto/arrange';
-            $response = rest_post($request_url, $body, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')], 1.0)->body;
+            $response = rest_post($request_url, $body, ['Authorization' => 'APPCODE ' . param_get('ali_app_code')])->body;
             if ($response['status'] == 0 && isset($response['data']['result'])) {
                 return $response['data'];
             } else {

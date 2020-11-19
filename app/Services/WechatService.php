@@ -20,7 +20,7 @@ class WechatService extends Service
                 'grant_type' => 'authorization_code',
             ];
             $request_url = param_get('wechat_base_url') . '/sns/jscode2session?' . http_build_query($params);
-            $response = rest_get($request_url, [], 1.0)->body;
+            $response = rest_get($request_url, [])->body;
             $this->logger->info($response);
             return $response;
         } catch (\Throwable $throwable) {
@@ -39,7 +39,7 @@ class WechatService extends Service
                 'access_token' => $access_token
             ];
             $request_url = param_get('wechat_base_url') . '/cv/ocr/comm?' . http_build_query($params);
-            $response = rest_post($request_url, [], [], 1.0)->body;
+            $response = rest_post($request_url, [], [])->body;
             if (isset($response['errcode']) && $response['errcode'] === 0) {
                 return $response;
             } else {
@@ -58,7 +58,7 @@ class WechatService extends Service
             }
             $access_token = $this->_token();
             $request_url = param_get('wechat_base_url') . '/cgi-bin/media/voice/translatecontent?' . http_build_query(['access_token' => $access_token, 'lfrom' => $from, 'lto' => $to]);
-            $response = rest_post($request_url, $q, [], 1.0)->body;
+            $response = rest_post($request_url, $q)->body;
             if (!isset($response['errcode'])) {
                 return $response;
             } else {
@@ -105,7 +105,7 @@ class WechatService extends Service
             $access_token = $this->_token();
 
             $request_url = param_get('wechat_base_url') . '/cgi-bin/message/wxopen/template/uniform_send?' . http_build_query(['access_token' => $access_token]);
-            $response = rest_post($request_url, $temp_msg, [], 1.0)->body;
+            $response = rest_post($request_url, $temp_msg)->body;
             if (!isset($response['errcode']) && $response['errcode'] !== 0) {
                 return $response;
             } else {
@@ -125,7 +125,7 @@ class WechatService extends Service
             $access_token = $this->_token();
 
             $request_url = param_get('wechat_base_url') . '/cgi-bin/message/custom/send?' . http_build_query(['access_token' => $access_token]);
-            $response = rest_post($request_url, $cus_msg, [], 1.0)->body;
+            $response = rest_post($request_url, $cus_msg)->body;
             if (!isset($response['errcode']) && $response['errcode'] !== 0) {
                 return $response;
             } else {
@@ -146,7 +146,7 @@ class WechatService extends Service
             $access_token = $this->_token();
 
             $request_url = param_get('wechat_base_url') . '/datacube/getweanalysisappiddailyvisittrend?' . http_build_query(['access_token' => $access_token]);
-            $response = rest_post($request_url, ['begin_date' => $begin_date, 'end_date' => $end_date], [], 1.0)->body;
+            $response = rest_post($request_url, ['begin_date' => $begin_date, 'end_date' => $end_date])->body;
             if (!isset($response['errcode'])) {
                 return $response;
             } else {
@@ -168,7 +168,7 @@ class WechatService extends Service
             $access_token = $this->_token();
 
             $request_url = param_get('wechat_base_url') . '/datacube/getweanalysisappidmonthlyvisittrend?' . http_build_query(['access_token' => $access_token]);
-            $response = rest_post($request_url, ['begin_date' => $begin_date, 'end_date' => $end_date], [], 1.0)->body;
+            $response = rest_post($request_url, ['begin_date' => $begin_date, 'end_date' => $end_date])->body;
             if (!isset($response['errcode'])) {
                 return $response;
             } else {
@@ -194,7 +194,7 @@ class WechatService extends Service
                 'grant_type' => 'client_credential',
             ];
             $request_url = param_get('wechat_base_url') . '/cgi-bin/token?' . http_build_query($params);
-            $response = rest_get($request_url, [], 1.0)->body;
+            $response = rest_get($request_url)->body;
             if (!isset($response['errcode'])) {
                 $this->redisDb->set($redis_key, $response['access_token'], seconds('2h'));
                 return $response;

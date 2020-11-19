@@ -23,12 +23,15 @@ class AiController extends Controller
         $file = $this->request->getFile();
         $spec = input('spec', ['int', 'default' => 2]);
         $bk = input('bk', ['in' => 'red,blue,white', 'default' => 'blue']);
-        if (!is_file($file)) {
-            return '上传文件错误';
+        if (!is_file($file->getTempName())) {
+            return '上传文件异常';
         }
         $file_data = file_get_contents($file->getTempName());
         $base_img = chunk_split(base64_encode($file_data));
         $make_data = $this->aliMarketService->photo($base_img, $spec, $bk, $file->getExtension());
+        if (!isset($make_data['result'])) {
+            return $make_data;
+        }
 
         $target = http_download($make_data['result']);
 
