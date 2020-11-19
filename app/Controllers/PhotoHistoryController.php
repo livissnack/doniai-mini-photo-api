@@ -28,7 +28,7 @@ class PhotoHistoryController extends Controller
         if ($ph_id <= 0) {
             return '请求参数错误';
         }
-        return PhotoHistory::first(['user_id' => $user_id, 'ph_id' => $ph_id], ['ph_id', 'image_url', 'size', 'remark', 'created_time']);
+        return PhotoHistory::first(['user_id' => $user_id, 'ph_id' => $ph_id], ['ph_id', 'image_url', 'print_image_url', 'size', 'remark', 'created_time']);
     }
 
     public function deleteAction()
