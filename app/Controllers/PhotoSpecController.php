@@ -14,7 +14,7 @@ class PhotoSpecController extends Controller
         if (!is_null($keyword)) {
             $query->whereContains('spec_name', $keyword);
         }
-        return $query->select(['photo_spec_id', 'spec_name', 'spec_id', 'price', 'is_you', 'is_hot'])->all();
+        return $query->all();
 
     }
 
