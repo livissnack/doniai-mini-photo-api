@@ -57,6 +57,11 @@ class AiController extends Controller
     public function ocrPrintedTextAction()
     {
         $file = $this->request->getFile();
+
+        if ($file->getSize() > 10485760) {
+            return '文件太大了，识别不了';
+        }
+
         $bucket_name = param_get('ali_oss_bucket_name');
         $this->checkDir($bucket_name);
         $target = path("@tmp/uploads/{$bucket_name}/{$file->getName()}");
@@ -71,9 +76,9 @@ class AiController extends Controller
             $ocr_res = $this->wechatService->ocr_printed_text($url);
             $str = '';
             foreach ($ocr_res as $value) {
-                $str .= $value['text'].',';
+                $str .= $value['text'].';';
             }
-            return $str;
+            return ['code' => 0, 'message' => '识别成功', 'data' => $str];
         }
         return '识别失败';
     }
