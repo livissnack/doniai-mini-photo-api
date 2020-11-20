@@ -16,7 +16,6 @@ class OrderController extends Controller
     public function indexAction()
     {
        return Order::search(['status'])
-           ->select(['order_id', 'order_sn', 'amount', 'total_amount', 'type', 'tracking_number', 'remark'])
            ->where(['is_show' => Order::ENABLED_SHOW])
            ->paginate();
     }

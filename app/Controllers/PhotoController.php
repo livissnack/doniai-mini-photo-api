@@ -58,6 +58,13 @@ class PhotoController extends Controller
             return '文件名不能为空';
         }
 
-        return $this->photoService->take($file_name);
+        $no_water_mark_img = $this->photoService->take($file_name);
+        if (!isset($no_water_mark_img['file_name']) || is_null($no_water_mark_img['file_name'])) {
+            return '无水印图片获取失败';
+        }
+        $photo_history = PhotoHistory::first(['photo_key' => $file_name]);
+        $photo_history->image_url = $no_water_mark_img['file_name'];
+        $photo_history->print_image_url = $no_water_mark_img['file_name_list'];
+        return $photo_history->update();
     }
 }

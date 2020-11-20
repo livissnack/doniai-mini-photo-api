@@ -10,11 +10,11 @@ class PhotoSpecController extends Controller
     public function indexAction()
     {
         $keyword = input('keyword', ['string', 'default' => '']);
-        $query = PhotoSpec::search(['spec_id', 'title'])->where(['enabled' => 1]);
+        $query = PhotoSpec::search(['spec_id', 'spec_name'])->where(['enabled' => 1]);
         if (!is_null($keyword)) {
-            $query->whereContains('title', $keyword);
+            $query->whereContains('spec_name', $keyword);
         }
-        return $query->select(['photo_spec_id', 'title', 'size', 'price', 'is_you', 'is_hot'])->all();
+        return $query->select(['photo_spec_id', 'spec_name', 'spec_id', 'price', 'is_you', 'is_hot'])->all();
 
     }
 
