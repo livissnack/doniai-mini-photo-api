@@ -41,7 +41,7 @@ class WechatService extends Service
             $request_url = param_get('wechat_base_url') . '/cv/ocr/comm?' . http_build_query($params);
             $response = rest_post($request_url, [], [])->body;
             if (isset($response['errcode']) && $response['errcode'] === 0) {
-                return $response;
+                return $response['items'];
             } else {
                 throw new \Exception('OCR图片识别失败');
             }

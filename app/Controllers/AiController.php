@@ -68,7 +68,12 @@ class AiController extends Controller
         $url = AliyunOssService::getPublicObjectURL($bucket_name, $filename);
 
         if (is_string($url)) {
-            return $this->wechatService->ocr_printed_text($url);
+            $ocr_res = $this->wechatService->ocr_printed_text($url);
+            $str = '';
+            foreach ($ocr_res as $value) {
+                $str .= $value['text'].',';
+            }
+            return $str;
         }
         return '识别失败';
     }
