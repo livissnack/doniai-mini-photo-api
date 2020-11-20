@@ -44,7 +44,7 @@ class PhotoController extends Controller
             $photo_history->print_image_url = $make_res['result']['print_wm_url_list'][0];
             $photo_history->photo_key = $make_res['result']['file_name'][0];
             $photo_history->user_id = $this->identity->getId();
-            $photo_history->photo_spec_id = $spec_id;
+            $photo_history->spec_id = $spec_id;
 
             return $photo_history->save();
         }

@@ -21,14 +21,14 @@ class AiController extends Controller
     public function photoToTextAction()
     {
         $file = $this->request->getFile();
-        $spec = input('spec', ['int', 'default' => 2]);
+        $spec_id = input('spec_id', ['int', 'default' => 2]);
         $bk = input('bk', ['in' => 'red,blue,white', 'default' => 'blue']);
         if (!is_file($file->getTempName())) {
             return '上传文件异常';
         }
         $file_data = file_get_contents($file->getTempName());
         $base_img = chunk_split(base64_encode($file_data));
-        $make_data = $this->aliMarketService->photo($base_img, $spec, $bk, $file->getExtension());
+        $make_data = $this->aliMarketService->photo($base_img, $spec_id, $bk, $file->getExtension());
         if (!isset($make_data['result'])) {
             return $make_data;
         }
@@ -47,7 +47,7 @@ class AiController extends Controller
         $photo_history->image_url = $photo_url;
         $photo_history->size = $make_data['size'] ?? '';
         $photo_history->user_id = $this->identity->getId();
-        $photo_history->photo_spec_id = $spec;
+        $photo_history->spec_id = $spec_id;
         $photo_history->image_url = str_replace('http://', 'https://', $photo_url);
         $photo_history->photo_key = $make_data['photo_key'];
         $photo_history->save();
