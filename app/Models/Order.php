@@ -35,6 +35,7 @@ class Order extends Model
     public $send_name;
     public $transit_time;
     public $delivery_time;
+    public $good_name;
     public $remark;
     public $updator_name;
     public $updated_time;
