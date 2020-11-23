@@ -47,6 +47,7 @@ class PayController extends Controller
             $order->amount = $spec->price;
             $order->total_amount = $spec->price;
             $order->type = Order::TYPE_VIRTUAL;
+            $order->is_show = Order::ENABLED_SHOW;
             $order->user_id = $user_id;
             $order->send_name = 'system';
             $order->delivery_time = time();

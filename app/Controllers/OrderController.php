@@ -15,20 +15,44 @@ class OrderController extends Controller
 {
     public function indexAction()
     {
-       return Order::search(['status'])
-           ->where(['is_show' => Order::ENABLED_SHOW])
+        $user_id = $this->identity->getId();
+        if ($user_id < 0) {
+            return '用户未授权登录';
+        }
+
+        return Order::search(['status'])
+           ->where(['is_show' => Order::ENABLED_SHOW, 'user_id' => $user_id])
            ->paginate();
+    }
+
+    public function deleteAction()
+    {
+        $user_id = $this->identity->getId();
+        if ($user_id < 0) {
+            return '用户未授权登录';
+        }
+        return Order::rUpdate(['is_show' => Order::UNENABLED_SHOW]);
     }
 
     public function detailAction()
     {
         $order_id = input('order_id', ['int', 'default' => 0]);
-
-        $order = Order::get($order_id);
-        $express = [];
-        if (!is_null($order->tracking_number) && !is_null($order->logistic_company)) {
-            $express = $this->aliMarketService->express($order->tracking_number, $order->logistic_company);
+        $user_id = $this->identity->getId();
+        if ($user_id < 0) {
+            return '用户未授权登录';
         }
-        return ['order' => $order, 'express' => $express];
+
+        return Order::get($order_id);
+    }
+
+    public function expressAction()
+    {
+        $user_id = $this->identity->getId();
+        if ($user_id < 0) {
+            return '用户未授权登录';
+        }
+        $tracking_number = input('tracking_number', ['string', 'default' => '']);
+        $logistic_company = input('logistic_company', ['string', 'default' => '']);
+        return $this->aliMarketService->express($tracking_number, $logistic_company);
     }
 }
