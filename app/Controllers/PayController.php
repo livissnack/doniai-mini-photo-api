@@ -14,7 +14,7 @@ class PayController extends Controller
     public function photoAction()
     {
         $spec_id = input('spec_id', ['int', 'min' => 1]);
-        $pay_json = input('pay_json', ['string', 'default' => '']);
+        $pay_json = input('pay_json', ['default' => []]);
         $user_id = $this->identity->getId();
         if ($user_id < 0) {
             return '用户未授权登录';
@@ -39,7 +39,7 @@ class PayController extends Controller
             $log->user_id = $user_id;
             $log->balance = $user->balance - $spec->price;
             $log->amount = $spec->price;
-            $log->pay_info = $pay_json;
+            $log->pay_info = json_encode($pay_json);
             $log->create();
 
             $order = new Order();
