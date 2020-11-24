@@ -64,21 +64,16 @@ class PayController extends Controller
             $user->update();
 
             $success = true;
-            $temp_data = [
+            $appid = param_get('wechat_mini_app_id');
+            $str = "恭喜你支付成功<a data-miniprogram-appid='$appid' data-miniprogram-path='pages/index/index'>智能证照欢迎你</a>";
+            $send_data = [
                 'touser' => $user->openid,
-                'template_id' => 'XFNW9Kc_6dqXPUgTrHQQ85doNL2poukrz2pzmCWrD8o',
-                'page' => 'index',
-                'miniprogram_state' => 'trial',
-                'lang' => 'zh_CN',
-                'data' => [
-                    'character_string1' => ['value' => $order->order_sn],
-                    'thing2' => ['value' => $order->good_name],
-                    'number3' => ['value' => 1],
-                    'time4' => ['value' => date('Y-m-d H:i:s', $order->created_time)],
-                    'thing5' => ['value' => ['未支付', '已支付', '已退款', '运输中', '已完成'][$order->status]],
+                'msgtype' => 'text',
+                'text' => [
+                    'content' => $str
                 ],
             ];
-            $this->wechatService->send_subscribe_msg($temp_data);
+            $this->wechatService->send_custom_msg($send_data);
             $data = ['code' => 0, 'message' => '支付成功', 'balance' => $user->balance];
 
         } catch (\Throwable $throwable) {

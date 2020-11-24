@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\PhotoSpec;
+use App\Models\User;
 use App\Services\AliMarketService;
 use App\Services\AliyunOssService;
 use App\Services\BaiduService;
@@ -29,7 +30,37 @@ class TestController extends Controller
 
     public function indexAction()
     {
-        return 'hello world';
+        $appid = param_get('wechat_mini_app_id');
+
+        $str = '恭喜你兑换成功<a data-miniprogram-appid=\$appid\' data-miniprogram-path=\'pages/index/index\'>智能证照欢迎你</a>';
+        return $str;
+
+        $user = User::get(2);
+        $temp_data = [
+            'touser' => $user->openid,
+            'template_id' => 'XFNW9Kc_6dqXPUgTrHQQ85doNL2poukrz2pzmCWrD8o',
+            'page' => 'index',
+            'miniprogram_state' => 'trial',
+            'lang' => 'zh_CN',
+            'data' => [
+                'character_string1' => ['value' => 'adadada'],
+                'thing2' => ['value' => 'adadas'],
+                'number3' => ['value' => 1],
+                'time4' => ['value' => date('Y-m-d H:i:s', time())],
+                'thing5' => ['value' => ['未支付', '已支付', '已退款', '运输中', '已完成'][4]],
+            ],
+        ];
+        $res = $this->wechatService->send_subscribe_msg($temp_data);
+        if (is_string($res)) {
+            $send_data = [
+                'touser' => $user->openid,
+                'msgtype' => 'text',
+                'text' => [
+                    'content' => '文本内容...<a href="http://www.qq.com" data-miniprogram-appid="wx12e6720347a6907f" data-miniprogram-path="pages/index/index">点击跳小程序</a>'
+                ],
+            ];
+            $this->wechatService->send_custom_msg($send_data);
+        }
     }
 
     public function save_spec($data, $spec_id)
