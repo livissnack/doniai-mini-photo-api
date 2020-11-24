@@ -45,8 +45,9 @@ class PhotoController extends Controller
             $photo_history->photo_key = $make_res['result']['file_name'][0];
             $photo_history->user_id = $this->identity->getId();
             $photo_history->spec_id = $spec_id;
-
-            return $photo_history->save();
+            $res = $photo_history->save();
+            $this->redisBroker->lpush('task.sync.list', $res->ph_id);
+            return $res;
         }
         return $verify_res;
     }
