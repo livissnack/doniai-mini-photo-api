@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\BaiduService;
 use ManaPHP\Helper\LocalFS;
 use ManaPHP\Rest\Controller;
 use ManaPHP\Security\Random;
@@ -14,6 +15,7 @@ use App\Services\AliyunOssService;
  * Class AiController
  * @package App\Controllers
  * @property-read WechatService $wechatService
+ * @property-read BaiduService $baiduService
  * @property-read AliMarketService $aliMarketService
  */
 class AiController extends Controller
@@ -81,6 +83,18 @@ class AiController extends Controller
             return ['code' => 0, 'message' => '识别成功', 'data' => $str];
         }
         return '识别失败';
+    }
+
+    public function ocrPlantAction()
+    {
+        $file = $this->request->getFile();
+        if (!is_file($file->getTempName())) {
+            return '上传文件异常';
+        }
+        $file_data = file_get_contents($file->getTempName());
+        $base_img = chunk_split(base64_encode($file_data));
+
+        return $this->baiduService->ocr_plant($base_img);
     }
 
     public function translateAction()

@@ -19,15 +19,15 @@ class BaiduService extends Service
 
     protected $_secret_key;
 
-    public function ocr_plant($img)
+    public function ocr_plant($base64_img)
     {
         try {
-            $params = [
-                'access_token' => $this->_token(),
+            $request_data = [
+                'image' => $base64_img,
+                'baike_num' => 5
             ];
-            $request_data = ['image' => base64_encode($img)];
-            $request_url = $this->_base_url . '/image-classify/v1/plant?' . http_build_query($params);
-            $response = rest_post($request_url, $request_data, ['Content-Type' => 'application/x-www-form-urlencoded'])->body;
+            $request_url = $this->_base_url . '/image-classify/v1/plant?' . http_build_query(['access_token' => $this->_token()]);
+            $response = http_post($request_url, $request_data)->body;
             if (!isset($response['error'])) {
                 return $response;
             } else {
