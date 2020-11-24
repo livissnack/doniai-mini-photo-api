@@ -136,6 +136,26 @@ class WechatService extends Service
         }
     }
 
+    public function send_subscribe_msg($cus_msg)
+    {
+        try {
+            if (is_null($cus_msg)) {
+                throw new InvalidValueException('要发送的客服消息为空');
+            }
+            $access_token = $this->_token();
+
+            $request_url = param_get('wechat_base_url') . '/cgi-bin/message/subscribe/send?' . http_build_query(['access_token' => $access_token]);
+            $response = rest_post($request_url, $cus_msg)->body;
+            if (!isset($response['errcode']) && $response['errcode'] !== 0) {
+                return $response;
+            } else {
+                throw new \Exception('发送客服消息接口调用失败');
+            }
+        } catch (\Throwable $throwable) {
+            return $throwable->getMessage();
+        }
+    }
+
     public function daily_visit_trend()
     {
         try {
