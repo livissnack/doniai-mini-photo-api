@@ -9,7 +9,7 @@ class NewsController extends Controller
 {
     public function indexAction()
     {
-       return News::select(['news_id', 'title', 'article', 'author', 'source', 'pushed_time', 'post_image_url', 'see_nums', 'like_nums'])
+       return News::select(['news_id', 'title', 'article', 'author', 'source', 'pushed_time', 'post_image_url', 'see_nums', 'like_nums', 'tag'])
            ->where(['status' => News::STATUS_NORMAL])
            ->paginate();
     }
