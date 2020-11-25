@@ -20,6 +20,7 @@ class User extends Model
     public $province;
     public $balance;
     public $real_name;
+    public $mobile;
     public $login_time;
     public $login_ip;
     public $updator_name;
