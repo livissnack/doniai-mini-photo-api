@@ -17,6 +17,18 @@ class NewsController extends Controller
     public function detailAction()
     {
         $news_id = input('news_id', ['int', 'default' => 0]);
-        return News::first(['news_id' => $news_id], ['news_id', 'title', 'article', 'author', 'source', 'pushed_time']);
+        $news = News::first(['news_id' => $news_id], ['news_id', 'title', 'article', 'author', 'source', 'pushed_time']);
+        ++$news->see_nums;
+        $news->save();
+        return $news;
+    }
+
+    public function likeAction()
+    {
+        $news_id = input('news_id', ['int', 'default' => 0]);
+        $news = News::get($news_id);
+        ++$news->like_nums;
+        $news->save();
+        return $news;
     }
 }
