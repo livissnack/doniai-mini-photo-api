@@ -33,6 +33,7 @@ class Order extends Model
     public $address_id;
     public $tracking_number;
     public $send_name;
+    public $spec_info;
     public $transit_time;
     public $delivery_time;
     public $good_name;

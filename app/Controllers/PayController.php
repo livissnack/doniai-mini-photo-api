@@ -56,6 +56,7 @@ class PayController extends Controller
             $order->is_show = Order::ENABLED_SHOW;
             $order->user_id = $user_id;
             $order->send_name = 'system';
+            $order->spec_info = $spec->width_px.'*'.$spec->height_px.'px'.' | '.$spec->width_mm.'*'.$spec->height_mm.'mm';
             $order->delivery_time = time();
             $order->good_name = $spec->spec_name;
             $order->create();
