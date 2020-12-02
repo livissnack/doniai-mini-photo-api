@@ -31,4 +31,9 @@ class AddressController extends Controller
         $address_id = input('address_id', ['int', 'default' => 0]);
         return Address::get($address_id);
     }
+
+    public function deleteAction()
+    {
+        return Address::rDelete();
+    }
 }

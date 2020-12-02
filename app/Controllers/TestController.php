@@ -30,56 +30,128 @@ class TestController extends Controller
 
     public function indexAction()
     {
-        $appid = param_get('wechat_mini_app_id');
+        $a = ['1', '1'];
+        foreach ($a as $k => $v) {
+            $v = 2;
+        }
+        return $a;
+        $b = [3, 4];
+        $c = array_merge_recursive($a, $b);
+        return $c;
+        return password_hash('123', PASSWORD_DEFAULT);
+        return $this->readLine();
+    }
 
-        $str = '恭喜你兑换成功<a data-miniprogram-appid=\$appid\' data-miniprogram-path=\'pages/index/index\'>智能证照欢迎你</a>';
-        return $str;
+    public function explodeStr()
+    {
+        $str = '1,2,3';
+        return explode(',', $str);
+    }
 
-        $user = User::get(2);
-        $temp_data = [
-            'touser' => $user->openid,
-            'template_id' => 'XFNW9Kc_6dqXPUgTrHQQ85doNL2poukrz2pzmCWrD8o',
-            'page' => 'index',
-            'miniprogram_state' => 'trial',
-            'lang' => 'zh_CN',
-            'data' => [
-                'character_string1' => ['value' => 'adadada'],
-                'thing2' => ['value' => 'adadas'],
-                'number3' => ['value' => 1],
-                'time4' => ['value' => date('Y-m-d H:i:s', time())],
-                'thing5' => ['value' => ['未支付', '已支付', '已退款', '运输中', '已完成'][4]],
-            ],
-        ];
-        $res = $this->wechatService->send_subscribe_msg($temp_data);
-        if (is_string($res)) {
-            $send_data = [
-                'touser' => $user->openid,
-                'msgtype' => 'text',
-                'text' => [
-                    'content' => '文本内容...<a href="http://www.qq.com" data-miniprogram-appid="wx12e6720347a6907f" data-miniprogram-path="pages/index/index">点击跳小程序</a>'
-                ],
-            ];
-            $this->wechatService->send_custom_msg($send_data);
+    public function implodeArr()
+    {
+        $arr = [1, 2, 3];
+//        return join(',', $arr);
+        return implode(';', $arr);
+    }
+
+    /**
+     * 逐行读取txt文件
+     */
+    public function readLine()
+    {
+        $file = fopen(path('@data/text.txt'), 'r');
+        $arrs = [];
+        $i = 0;
+        while (!feof($file)) {
+            $arrs[$i] = fgetc($file);
+            $i++;
+        }
+        fclose($file);
+        return $arrs;
+    }
+
+    /**
+     * 输出倒序星星图
+     */
+    public function xing()
+    {
+        for ($i = 1; $i <= 8; $i++) {
+            for ($s = 1; $s <= ((8 - $i) + 1); $s++) {
+                echo '*';
+            }
+            echo '<br/>';
         }
     }
 
-    public function save_spec($data, $spec_id)
+    /**
+     * 如何解决多线程同时读写一个文件的问题
+     */
+    public function fileProblem()
     {
-        $spec = PhotoSpec::first(['spec_id' => $spec_id]);
-        $spec->spec_name = $data['spec_name'];
-        $spec->background_color = $data['background_color'];
-        $spec->file_size_max = $data['file_size_max'];
-        $spec->file_size_min = $data['file_size_min'];
-        $spec->height_mm = $data['height_mm'];
-        $spec->height_px = $data['height_px'];
-        $spec->is_print = $data['is_print'];
-        $spec->ppi = $data['ppi'];
-        $spec->width_mm = $data['width_mm'];
-        $spec->width_px = $data['width_px'];
-        return $spec->update();
+        $fp = fopen(path('@data/tencent.text'), 'w+');
+        if (flock($fp, LOCK_EX)) {
+            fwrite($fp, 'write here');
+            flock($fp, LOCK_UN);
+        } else {
+            echo "cloudn't lock file";
+        }
+        fclose($fp);
     }
 
-    public function update_price() {
-        PhotoSpec::updateAll(['price' => 4.99], ['enabled' => 1]);
+    public function alphFirst()
+    {
+        $str = 'aa_bb';
+        $arr = explode('_', $str);
+
+        $newArr = [];
+        foreach ($arr as $k => $item) {
+            $newArr[$k] = ucfirst($item);
+        }
+        return implode('', $newArr);
+    }
+
+    public function diffDays()
+    {
+        $day1 = '2016-10-5';
+        $day2 = '2016-12-6';
+        $seconds1 = strtotime($day1);
+        $seconds2 = strtotime($day2);
+        if ($seconds1 > $seconds2) {
+            $diff = $seconds1 - $seconds2;
+        } else {
+            $diff = $seconds2 - $seconds1;
+        }
+        $days = $diff/86400;
+        return $days;
+    }
+
+    public function sortArr()
+    {
+        $arr = [0 => 1, 'aa' => 2, 3, 4, 'bb' => [[5], [6, 7]]];
+
+        $newArr = [];
+
+        array_walk_recursive($arr, function ($x) use (&$newArr) {
+            $newArr[] = $x;
+        });
+        sort($newArr);
+        return join(',', $newArr);
+    }
+
+    public function getEmail()
+    {
+        $xml = "
+            <ValueList>
+                <Value>@163.comadasda</Value>
+                <Value>Hello</Value>
+                <Value>hahaha@163.com</Value>
+                <Value>Green</Value>
+            </ValueList>
+        ";
+        $pattern = "/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/";
+        preg_match($pattern, $xml, $matches);
+        return $matches[0];
+
     }
 }
