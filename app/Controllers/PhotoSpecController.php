@@ -20,7 +20,7 @@ class PhotoSpecController extends Controller
 
     public function detailAction()
     {
-        $address_id = input('photo_spec_id', ['int', 'default' => 0]);
-        return PhotoSpec::get($address_id);
+        $spec_id = input('spec_id', ['int', 'default' => 0]);
+        return PhotoSpec::first(['spec_id' => $spec_id, 'enabled' => 1]);
     }
 }
