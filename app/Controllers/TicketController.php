@@ -15,7 +15,14 @@ class TicketController extends Controller
 {
     public function indexAction()
     {
-        return Ticket::select(['ticket_id', 'name', 'amount', 'qianqu', 'houqu', 'phase'])->paginate();
+        $data = Ticket::select(['ticket_id', 'name', 'amount', 'qianqu', 'houqu', 'phase'])->paginate();
+
+        foreach ($data->items as $k => &$v) {
+            if (is_string($v['qianqu']) && !is_null($v['qianqu'])) {
+                $v['qianqu'] = explode(' ', $v['qianqu']);
+            }
+        }
+        return $data;
     }
 
     public function randomAction()
