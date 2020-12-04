@@ -20,9 +20,16 @@ class OrderController extends Controller
             return '用户未授权登录';
         }
 
-        return Order::search(['status'])
+        $data = Order::search(['status'])
            ->where(['is_show' => Order::ENABLED_SHOW, 'user_id' => $user_id])
            ->paginate();
+
+        foreach ($data->items as $k => &$v) {
+            if (!is_null($v['created_time'])) {
+                $v['created_time'] = date('Y-m-d H:i:s', $v['created_time']);
+            }
+        }
+        return $data;
     }
 
     public function deleteAction()
@@ -42,7 +49,9 @@ class OrderController extends Controller
             return '用户未授权登录';
         }
 
-        return Order::get($order_id);
+        $order = Order::get($order_id);
+        $order->created_time = date('Y-m-d H:i:s', $order->created_time);
+        return $order;
     }
 
     public function expressAction()

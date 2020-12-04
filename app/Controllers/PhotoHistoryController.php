@@ -13,9 +13,15 @@ class PhotoHistoryController extends Controller
         if ($user_id < 0) {
             return '用户未授权登录';
         }
-       return PhotoHistory::select(['ph_id', 'image_url', 'size', 'remark', 'created_time'])
+       $data = PhotoHistory::select(['ph_id', 'image_url', 'size', 'remark', 'created_time'])
            ->where(['user_id' => $user_id])
            ->paginate();
+        foreach ($data->items as $k => &$v) {
+            if (!is_null($v['created_time'])) {
+                $v['created_time'] = date('Y-m-d H:i:s', $v['created_time']);
+            }
+        }
+        return $data;
     }
 
     public function detailAction()
