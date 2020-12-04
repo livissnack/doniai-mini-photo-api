@@ -71,8 +71,7 @@ class TicketService extends Service
         } while ($type);
         //随机蓝球
         $ball['blue'] = $rand_blue;
-        $red = implode($ball['red'], ',');
-        return ['red' => $red, 'blue' => $ball['blue']];
+        return ['red' => $ball['red'], 'blue' => $ball['blue']];
     }
 
     public function getRecentBlue($phase = 10)
