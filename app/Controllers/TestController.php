@@ -8,6 +8,7 @@ use App\Services\AliMarketService;
 use App\Services\AliyunOssService;
 use App\Services\BaiduService;
 use App\Services\PhotoService;
+use App\Services\TicketService;
 use App\Services\WechatService;
 use ManaPHP\Helper\LocalFS;
 use ManaPHP\Rest\Controller;
@@ -20,6 +21,7 @@ use ManaPHP\Security\Random;
  * @property-read AliMarketService $aliMarketService
  * @property-read BaiduService $baiduService
  * @property-read PhotoService $photoService
+ * @property-read TicketService $ticketService
  */
 class TestController extends Controller
 {
@@ -30,6 +32,27 @@ class TestController extends Controller
 
     public function indexAction()
     {
+        return $this->ticketService->doubleBall();
+
+        $data = [
+            ['title' => 2],
+            ['title' => 12],
+            ['title' => 13],
+            ['title' => 14],
+            ['title' => 15],
+            ['title' => 16],
+
+            ['title' => 18],
+        ];
+
+        $data = array_chunk($data, 6);
+        $qianqu = implode(' ', array_column($data[0], 'title'));
+        $houqu = implode( ' ', array_column($data[1], 'title'));
+        return $qianqu;
+
+
+
+
         $a = ['1', '1'];
         foreach ($a as $k => $v) {
             $v = 2;

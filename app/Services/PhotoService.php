@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Throwable;
 use ManaPHP\Service;
-use ManaPHP\Exception\InvalidValueException;
 use ManaPHP\Exception\MissingFieldException;
 
 class PhotoService extends Service
