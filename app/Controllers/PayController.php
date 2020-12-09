@@ -56,7 +56,7 @@ class PayController extends Controller
             $data = false;
             $this->db->begin();
 
-            $spec = PhotoSpec::first(['spec_id' => $spec_id], ['spec_name', 'price']);
+            $spec = PhotoSpec::first(['spec_id' => $spec_id]);
 
             $log_type = PayLogType::first(['code' => 'photo.take.pay']);
             $user = User::get($user_id);
