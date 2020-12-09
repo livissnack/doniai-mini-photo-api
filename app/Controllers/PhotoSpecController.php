@@ -15,7 +15,6 @@ class PhotoSpecController extends Controller
             $query->whereContains('spec_name', $keyword);
         }
         return $query->all();
-
     }
 
     public function detailAction()
