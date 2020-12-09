@@ -32,7 +32,7 @@ class PayController extends Controller
         if ($type === 2) {
             $query->where(['amount<' => 0]);
         }
-        $data = $query->paginate();
+        $data = $query->orderBy(['created_time' => SORT_DESC])->paginate();
 
         foreach ($data->items as $k => &$v) {
             if (!is_null($v['created_time'])) {
