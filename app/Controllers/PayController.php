@@ -17,6 +17,24 @@ use ManaPHP\Rest\Controller;
  */
 class PayController extends Controller
 {
+    public function logAction()
+    {
+        $user_id = $this->identity->getId();
+        if ($user_id < 0) {
+            return '用户未授权登录';
+        }
+        $type = input('type', ['int', 'in' => '0,1,2', 'default' => 0]);
+        $query = PayLog::where(['user_id' => $user_id]);
+        if ($type === 1) {
+            $query->where(['amount>' => 0]);
+        }
+
+        if ($type === 2) {
+            $query->where(['amount<' => 0]);
+        }
+        return $query->paginate();
+    }
+
     public function photoAction()
     {
         $spec_id = input('spec_id', ['int', 'min' => 1]);
@@ -44,7 +62,7 @@ class PayController extends Controller
             $log->type_name = $log_type->name;
             $log->user_id = $user_id;
             $log->balance = $user->balance - $spec->price;
-            $log->amount = $spec->price;
+            $log->amount = -1*$spec->price;
             $log->pay_info = json_encode($pay_json);
             $log->create();
 
