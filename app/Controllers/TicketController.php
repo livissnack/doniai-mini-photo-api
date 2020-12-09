@@ -15,7 +15,7 @@ class TicketController extends Controller
 {
     public function indexAction()
     {
-        $data = Ticket::select(['ticket_id', 'name', 'amount', 'qianqu', 'houqu', 'phase'])->paginate();
+        $data = Ticket::select(['ticket_id', 'name', 'amount', 'qianqu', 'houqu', 'phase'])->orderBy(['phase' => SORT_DESC])->paginate();
 
         foreach ($data->items as $k => &$v) {
             if (is_string($v['qianqu']) && !is_null($v['qianqu'])) {
