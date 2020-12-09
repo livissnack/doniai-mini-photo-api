@@ -32,7 +32,14 @@ class PayController extends Controller
         if ($type === 2) {
             $query->where(['amount<' => 0]);
         }
-        return $query->paginate();
+        $data = $query->paginate();
+
+        foreach ($data->items as $k => &$v) {
+            if (!is_null($v['created_time'])) {
+                $v['created_time'] = date('Y-m-d H:i:s', $v['created_time']);
+            }
+        }
+        return $data;
     }
 
     public function photoAction()
