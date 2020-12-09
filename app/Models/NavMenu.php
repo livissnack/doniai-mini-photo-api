@@ -14,6 +14,7 @@ class NavMenu extends Model
     public $icon_suffix;
     public $image_url;
     public $jump_url;
+    public $color;
     public $enabled;
     public $remark;
     public $creator_name;
