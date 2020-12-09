@@ -117,7 +117,7 @@ class SigninController extends Controller
         } finally {
             if ($success) {
                 $this->db->commit();
-                return ['code' => 0, 'message' => '签到成功'];
+                return ['code' => 0, 'message' => '签到成功', 'data' => isset($gift_coin) ? $gift_coin : 0];
             } else {
                 $this->db->rollback();
                 return '签到失败';
