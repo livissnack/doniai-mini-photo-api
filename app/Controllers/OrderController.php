@@ -22,6 +22,7 @@ class OrderController extends Controller
 
         $data = Order::search(['status'])
            ->where(['is_show' => Order::ENABLED_SHOW, 'user_id' => $user_id])
+            ->orderBy(['created_time' => SORT_DESC])
            ->paginate();
 
         foreach ($data->items as $k => &$v) {
