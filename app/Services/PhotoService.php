@@ -174,6 +174,66 @@ class PhotoService extends Service
         }
     }
 
+    /**
+     * @param $filename
+     * @param int $hat_id
+     * @param int $clothe_id
+     * @return array|mixed|string
+     * 全身（半身）换装
+     */
+    public function whole_body_clothe($filename, $hat_id =1, $clothe_id = 1)
+    {
+        try {
+            if (is_null($filename)) {
+                throw new MissingFieldException('图片地址为空');
+            }
+
+            $request_body = [
+                'app_key' => '0d258d82617869442a54ff41f6bdd3f090b880ff',
+                'file' => $filename,
+                'clothes_id' => $clothe_id,
+                'hat_id' => $hat_id,
+                'need_resize' => true
+            ];
+            $request_url = 'http://apicall.id-photo-verify.com/api/whole_body_change';
+            $response = rest_post($request_url, $request_body)->body;
+            if ($response['code'] === 200) {
+                return $response;
+            } else {
+                return $response['error'];
+            }
+        } catch (Throwable $throwable) {
+            return $throwable->getMessage();
+        }
+    }
+
+
+    public function cutout_pic($filename, $hat_id =1, $clothe_id = 1)
+    {
+        try {
+            if (is_null($filename)) {
+                throw new MissingFieldException('图片地址为空');
+            }
+
+            $request_body = [
+                'app_key' => '0d258d82617869442a54ff41f6bdd3f090b880ff',
+                'file' => $filename,
+                'clothes_id' => $clothe_id,
+                'hat_id' => $hat_id,
+                'need_resize' => true
+            ];
+            $request_url = 'https://api.id-photo-verify.com/official_web/bgcolor';
+            $response = rest_post($request_url, $request_body)->body;
+            if ($response['code'] === 200) {
+                return $response;
+            } else {
+                return $response['error'];
+            }
+        } catch (Throwable $throwable) {
+            return $throwable->getMessage();
+        }
+    }
+
     public function spec($spec_id)
     {
         try {

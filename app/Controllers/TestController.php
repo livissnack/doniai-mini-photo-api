@@ -13,6 +13,7 @@ use App\Services\WechatService;
 use ManaPHP\Helper\LocalFS;
 use ManaPHP\Rest\Controller;
 use ManaPHP\Security\Random;
+use Intervention\Image\ImageManagerStatic;
 
 /**
  * Class TestController
@@ -25,12 +26,50 @@ use ManaPHP\Security\Random;
  */
 class TestController extends Controller
 {
-    public function getAcl()
+    public function indexAction()
     {
-        return ['*' => '*'];
+        $file = $this->request->getFile();
+        $file_path = $file->getTempName();
+//        $data = http_post('https://api.id-photo-verify.com/official_web/bgcolor', $file_path, ['Content-Type' => 'multipart/form-data'])->body;
+
+
+        $width = ImageManagerStatic::make($file_path)->width();
+        $height = ImageManagerStatic::make($file_path)->height();
+
+        return ImageManagerStatic::make($file_path)
+            ->fill('#e54d42', 0, 0)
+            ->text('管欣', $width*0.95, $height*0.95, function ($font) {
+                $font->file(path('@public/static/fonts/Alibaba-PuHuiTi-Light.ttf'));
+                //配置水印大小
+                $font->size(20);
+                //配置水印颜色
+                $font->color('#fff');
+                //配置水印水平居左( left, right and center)
+                $font->align('right');
+                //配置水印垂直居下(top, bottom and middle)
+                $font->valign('bottom');
+                //配置水印旋转角度
+                $font->angle(360);
+            })
+            ->save(path('@tmp').'/new.png', 100, 'png');
     }
 
-    public function indexAction()
+    public function index1Action()
+    {
+        $file = $this->request->getFile();
+        if (!is_file($file->getTempName())) {
+            return '上传文件异常';
+        }
+
+        $file_data = file_get_contents($file->getTempName());
+        $base_img = chunk_split(base64_encode($file_data));
+
+        $image = 'https://doniai-mini.oss-cn-shenzhen.aliyuncs.com/fb44fa126ed5609fe8ff1065b117fd4f.jpg';
+        return $this->photoService->clothe($base_img);
+        return 'ss';
+    }
+
+    public function helloAction()
     {
         return $this->ticketService->doubleBall();
 

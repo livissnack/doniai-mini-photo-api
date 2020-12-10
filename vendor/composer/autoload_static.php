@@ -7,13 +7,27 @@ namespace Composer\Autoload;
 class ComposerStaticInit5f67a579544013f2a6a980ea93112fca
 {
     public static $files = array (
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '4378f255c67b62a024d3295602369ebf' => __DIR__ . '/..' . '/johnlui/aliyun-oss/src/AliyunOSS.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\Http\\Message\\' => 17,
+        ),
         'M' => 
         array (
             'ManaPHP\\' => 8,
+        ),
+        'I' => 
+        array (
+            'Intervention\\Image\\' => 19,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
         ),
         'A' => 
         array (
@@ -22,9 +36,21 @@ class ComposerStaticInit5f67a579544013f2a6a980ea93112fca
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
         'ManaPHP\\' => 
         array (
             0 => __DIR__ . '/..' . '/manaphp/framework',
+        ),
+        'Intervention\\Image\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
         'App\\' => 
         array (

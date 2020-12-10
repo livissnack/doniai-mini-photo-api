@@ -4,7 +4,8 @@
   "type": "project",
   "require": {
     "manaphp/framework": "dev-master",
-    "johnlui/aliyun-oss": "^2.2"
+    "johnlui/aliyun-oss": "^2.2",
+    "intervention/image": "^2.5"
   },
   "license": "MIT",
   "authors": [
