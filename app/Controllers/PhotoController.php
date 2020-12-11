@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\PhotoHistory;
+use App\Services\AliyunOssService;
 use App\Services\PhotoService;
+use Intervention\Image\ImageManagerStatic;
 use ManaPHP\Rest\Controller;
+use ManaPHP\Security\Random;
 
 /**
  * Class PhotoController
@@ -13,6 +16,13 @@ use ManaPHP\Rest\Controller;
  */
 class PhotoController extends Controller
 {
+    /**
+     * @return PhotoHistory|array|bool|mixed|string|null
+     * @throws \JsonException
+     * @throws \ManaPHP\Exception\JsonException
+     * @throws \ManaPHP\Exception\MisuseException
+     * 图片制作
+     */
     public function makeAction()
     {
         $file = $this->request->getFile();
@@ -52,6 +62,11 @@ class PhotoController extends Controller
         return $verify_res;
     }
 
+    /**
+     * @return PhotoHistory|string|null
+     * @throws \ManaPHP\Exception\MisuseException
+     * 获取无水印图片
+     */
     public function takeAction()
     {
         $file_name = input('file_name', ['string', 'default' => '']);
@@ -67,5 +82,36 @@ class PhotoController extends Controller
         $photo_history->image_url = $no_water_mark_img['file_name'];
         $photo_history->print_image_url = $no_water_mark_img['file_name_list'];
         return $photo_history->update();
+    }
+
+    public function backgroundAction()
+    {
+        $ph_id = input('ph_id', ['int', 'default' => 0]);
+        if ($ph_id < 1) {
+            return '该图片未制作成功';
+        }
+        $file = $this->request->getFile();
+        $file_path = $file->getTempName();
+        $ext_name = $file->getExtension();
+        $bucket_name = param_get('ali_oss_bucket_name');
+        $target = path("@tmp/uploads/{$bucket_name}/{$file->getName()}");
+        ImageManagerStatic::make($file_path)
+            ->fill('#e54d42', 0, 0)
+            ->save($target, 100, $ext_name);
+
+        $file->moveTo($target, 'jpg,jpeg,png,gif', true);
+        $content_type = 'image/' . $ext_name;
+        $filename = md5((new Random())->getUuid()) . '.' . $ext_name;
+        AliyunOssService::publicUpload($bucket_name, $filename, $target, ['ContentType' => $content_type]);
+        unlink($target);
+        $url = AliyunOssService::getPublicObjectURL($bucket_name, $filename);
+        if (is_string($url)) {
+            $photo_history = PhotoHistory::get($ph_id);
+            $photo_history->image_url = $url;
+            $photo_history->update();
+            return ['code' => 0, 'obj_name' => $filename, 'url' => $url];
+        } else {
+            return '水印添加失败';
+        }
     }
 }
