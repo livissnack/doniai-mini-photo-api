@@ -15,6 +15,8 @@ class PhotoHistory extends Model
     public $print_image_url;
     public $photo_key;
     public $spec_id;
+    public $final_pic_name;
+    public $print_pic_name;
     public $remark;
     public $updator_name;
     public $updated_time;

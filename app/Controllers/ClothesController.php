@@ -11,7 +11,7 @@ class ClothesController extends Controller
     {
         $sex = input('sex', ['int', 'default' => 1, 'in' => '1,2,3']);
         return Clothes::where(['sex' => $sex, 'enabled' => 1])
-            ->select(['id', 'url', 'type'])
+            ->select(['id', 'url', 'type', 'mark'])
             ->all();
     }
 }

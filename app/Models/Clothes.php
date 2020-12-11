@@ -13,6 +13,7 @@ class Clothes extends Model
     public $type;
     public $enabled;
     public $remark;
+    public $mark;
     public $sex;
     public $updator_name;
     public $updated_time;

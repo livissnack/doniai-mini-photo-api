@@ -26,7 +26,7 @@ use Intervention\Image\ImageManagerStatic;
  */
 class TestController extends Controller
 {
-    public function indexAction()
+    public function index1Action()
     {
         $file = $this->request->getFile();
         $file_path = $file->getTempName();
@@ -54,7 +54,7 @@ class TestController extends Controller
             ->save(path('@tmp').'/new.png', 100, 'png');
     }
 
-    public function index1Action()
+    public function indexAction()
     {
         $file = $this->request->getFile();
         if (!is_file($file->getTempName())) {
@@ -64,9 +64,9 @@ class TestController extends Controller
         $file_data = file_get_contents($file->getTempName());
         $base_img = chunk_split(base64_encode($file_data));
 
-        $image = 'https://doniai-mini.oss-cn-shenzhen.aliyuncs.com/fb44fa126ed5609fe8ff1065b117fd4f.jpg';
-        return $this->photoService->clothe($base_img);
-        return 'ss';
+        $res = $this->photoService->clothe($base_img);
+        var_dump($res['wm_pic_url']);
+        die();
     }
 
     public function helloAction()

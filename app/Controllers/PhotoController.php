@@ -62,6 +62,36 @@ class PhotoController extends Controller
         return $verify_res;
     }
 
+    public function clotheAction()
+    {
+        $file = $this->request->getFile();
+        if (!is_file($file->getTempName())) {
+            return '上传文件异常';
+        }
+
+        $ph_id = input('ph_id', ['int', 'default' => 0]);
+        $spec_id = input('spec_id', ['int', 'default' => 0]);
+        $clothes = input('clothes', ['default' => 'applet_boy1']);
+
+        if ($ph_id < 1) {
+            return '网络错误';
+        }
+
+        $file_data = file_get_contents($file->getTempName());
+        $base_img = chunk_split(base64_encode($file_data));
+
+        $clothe_data = $this->photoService->clothe($base_img, $spec_id, $clothes);
+
+        $photo_history = PhotoHistory::get($ph_id);
+        $photo_history->image_url = $clothe_data['wm_pic_url'][0];
+        $photo_history->print_image_url = $clothe_data['print_wm_pic_url'][0];
+        $photo_history->final_pic_name = $clothe_data['final_pic_name'][0];
+        $photo_history->print_pic_name = $clothe_data['print_pic_name'][0];
+        $res = $photo_history->update();
+        $this->redisBroker->lpush('task.sync.list', $res->ph_id);
+        return $res;
+    }
+
     /**
      * @return PhotoHistory|string|null
      * @throws \ManaPHP\Exception\MisuseException
