@@ -56,6 +56,7 @@ class TestController extends Controller
 
     public function indexAction()
     {
+        return PHP_SAPI;
         $file = $this->request->getFile();
         if (!is_file($file->getTempName())) {
             return '上传文件异常';

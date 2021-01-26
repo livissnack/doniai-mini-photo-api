@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'd274a21ffce77321af5fc537050b4d776dcb7aab',
+    'reference' => 'a26204d1db60c7a7d2d4f03121675bbb0fe58e77',
     'name' => 'manaphp/app-api',
   ),
   'versions' => 
@@ -45,7 +45,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'd274a21ffce77321af5fc537050b4d776dcb7aab',
+      'reference' => 'a26204d1db60c7a7d2d4f03121675bbb0fe58e77',
     ),
     'manaphp/framework' => 
     array (
